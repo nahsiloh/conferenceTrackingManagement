@@ -60,4 +60,33 @@ describe("Create Timetable", () => {
       "Ruby Errors from Mismatched Gem Versions 45min"
     ]);
   });
+
+  describe("print timetable", () => {
+    it("include the start times for the talks for morning session", () => {
+      const schedule = new Timetable(180);
+      const scheduledTalks = schedule.createTimetable(
+        talkDurationAndTitleObject
+      );
+      const print =
+        "09:00AM Writing Fast Tests Against Enterprise Rails 60min\n" +
+        "10:00AM Communicating Over Distance 60min\n" +
+        "11:00AM Sit Down and Write 30min\n" +
+        "11:30AM Lua for the Masses 30min";
+      expect(schedule.printTimetable(scheduledTalks, "09:00AM")).toBe(print);
+    });
+
+    it("include the start times for the talks for afternoon session", () => {
+      const schedule = new Timetable(240);
+      const scheduledTalks = schedule.createTimetable(
+        talkDurationAndTitleObject
+      );
+      const print =
+        "01:00PM Writing Fast Tests Against Enterprise Rails 60min\n" +
+        "02:00PM Communicating Over Distance 60min\n" +
+        "03:00PM Sit Down and Write 30min\n" +
+        "03:30PM Overdoing it in Python 45min\n" +
+        "04:15PM Ruby Errors from Mismatched Gem Versions 45min";
+      expect(schedule.printTimetable(scheduledTalks, "01:00PM")).toBe(print);
+    });
+  });
 });
