@@ -1,5 +1,5 @@
 const fs = require("fs");
-const talksData = fs.readFileSync("talksData.txt", "utf8");
+const talksData = fs.readFileSync("./data/talksData.txt", "utf8");
 
 const Timetable = require("./components/Timetable/Timetable");
 const FormatData = require("./common/formatData");
