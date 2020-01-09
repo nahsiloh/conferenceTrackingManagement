@@ -8,30 +8,34 @@ const {
   testTalkDurationAndTitleObject
 } = require("../data/testData");
 
+const {
+  convertDataToArray,
+  createUniqueTalkDurationArray,
+  sortUniqueTalkDurationArray,
+  createTalkDurationAndTitleObject,
+  executeFormatData
+} = require("./formatData");
+
 describe("Format Data", () => {
   it("should parse data to array", () => {
-    const newData = new FormatData(testData);
-    expect(newData.convertDataToArray(testData)).toStrictEqual(testDataArray);
+    expect(convertDataToArray(testData)).toStrictEqual(testDataArray);
   });
 
   it("should create a unique date array", () => {
-    const newData = new FormatData(testData);
-    expect(newData.createUniqueTalkDurationArray(testDataArray)).toStrictEqual(
+    expect(createUniqueTalkDurationArray(testDataArray)).toStrictEqual(
       testUniqueTalkDurationArray
     );
   });
 
   it("should sort the unique date array in descending order", () => {
-    const newData = new FormatData(testData);
     expect(
-      newData.sortUniqueTalkDurationArray(testUniqueTalkDurationArray)
+      sortUniqueTalkDurationArray(testUniqueTalkDurationArray)
     ).toStrictEqual(testUniqueTalkDurationArraySorted);
   });
 
   it("should create a unique date array", () => {
-    const newData = new FormatData(testData);
     expect(
-      newData.createTalkDurationAndTitleObject(
+      createTalkDurationAndTitleObject(
         testUniqueTalkDurationArray,
         testDataArray
       )
@@ -39,8 +43,7 @@ describe("Format Data", () => {
   });
 
   describe("Execute Format Data", () => {
-    const newData = new FormatData(testData);
-    expect(newData.executeFormatData(testData)).toStrictEqual(
+    expect(executeFormatData(testData)).toStrictEqual(
       testTalkDurationAndTitleObject
     );
   });

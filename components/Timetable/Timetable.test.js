@@ -1,11 +1,10 @@
 const Timetable = require("./Timetable");
-const FormatData = require("../../common/formatData");
+const { executeFormatData } = require("../../common/formatData");
 const { testData } = require("../../data/testData");
 
 describe("Create Timetable", () => {
   beforeEach(() => {
-    const newData = new FormatData(testData);
-    return (talkDurationAndTitleObject = newData.executeFormatData(testData));
+    return (talkDurationAndTitleObject = executeFormatData(testData));
   });
 
   it("should return empty if there are no time slots available", () => {

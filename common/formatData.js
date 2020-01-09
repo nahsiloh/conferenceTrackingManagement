@@ -9,85 +9,88 @@ const checkIfTalkIsLightning = durationRegexMatchArray => {
   }
 };
 
-class FormatData {
-  convertDataToArray(data) {
-    const dataArray = data.split("\n");
-    return dataArray;
-  }
+const convertDataToArray = data => {
+  const dataArray = data.split("\n");
+  return dataArray;
+};
 
-  createUniqueTalkDurationArray(dataArray) {
-    const uniqueTalkDurationArray = [];
+const createUniqueTalkDurationArray = dataArray => {
+  const uniqueTalkDurationArray = [];
 
-    dataArray.forEach(talk => {
-      let oneTalkDurationArray = talk.match(durationRegex);
+  dataArray.forEach(talk => {
+    let oneTalkDurationArray = talk.match(durationRegex);
 
-      const oneTalkDurationNumber = checkIfTalkIsLightning(
-        oneTalkDurationArray
-      );
+    const oneTalkDurationNumber = checkIfTalkIsLightning(oneTalkDurationArray);
 
-      if (uniqueTalkDurationArray.length === 0) {
+    if (uniqueTalkDurationArray.length === 0) {
+      uniqueTalkDurationArray.push(oneTalkDurationNumber);
+    }
+
+    if (uniqueTalkDurationArray.length > 0) {
+      if (
+        uniqueTalkDurationArray.some(
+          duration => duration === oneTalkDurationNumber
+        ) === false
+      ) {
         uniqueTalkDurationArray.push(oneTalkDurationNumber);
       }
+    }
+  });
+  return uniqueTalkDurationArray;
+};
 
-      if (uniqueTalkDurationArray.length > 0) {
-        if (
-          uniqueTalkDurationArray.some(
-            duration => duration === oneTalkDurationNumber
-          ) === false
-        ) {
-          uniqueTalkDurationArray.push(oneTalkDurationNumber);
+const sortUniqueTalkDurationArray = uniqueTalkDurationArray => {
+  const uniqueTalkDurationArraySorted = uniqueTalkDurationArray.sort(
+    (a, b) => b - a
+  );
+  return uniqueTalkDurationArraySorted;
+};
+
+const createTalkDurationAndTitleObject = (
+  uniqueTalkDurationArraySorted,
+  dataArray
+) => {
+  const talkDurationAndTitleObject = [];
+
+  uniqueTalkDurationArraySorted.forEach(duration => {
+    talkDurationAndTitleObject.push({ duration: duration, titles: [] });
+  });
+
+  dataArray.forEach(talk => {
+    if (talk.match(durationRegex) === null) {
+      const indexOfLightning = talkDurationAndTitleObject.findIndex(
+        index => index.duration === DURATION_OF_LIGHTNING_TALK
+      );
+      talkDurationAndTitleObject[indexOfLightning].titles.push(talk);
+    } else {
+      for (let i = 0; i < talkDurationAndTitleObject.length; i++) {
+        if (talk.includes(talkDurationAndTitleObject[i].duration)) {
+          talkDurationAndTitleObject[i].titles.push(talk);
+          return;
         }
       }
-    });
-    return uniqueTalkDurationArray;
-  }
+    }
+  });
+  return talkDurationAndTitleObject;
+};
 
-  sortUniqueTalkDurationArray(uniqueTalkDurationArray) {
-    const uniqueTalkDurationArraySorted = uniqueTalkDurationArray.sort(
-      (a, b) => b - a
-    );
-    return uniqueTalkDurationArraySorted;
-  }
+const executeFormatData = data => {
+  const dataArray = convertDataToArray(data);
+  const uniqueTalkDurationArray = createUniqueTalkDurationArray(dataArray);
+  const uniqueTalkDurationArraySorted = sortUniqueTalkDurationArray(
+    uniqueTalkDurationArray
+  );
+  const talkDurationAndTitleObject = createTalkDurationAndTitleObject(
+    uniqueTalkDurationArraySorted,
+    dataArray
+  );
+  return talkDurationAndTitleObject;
+};
 
-  createTalkDurationAndTitleObject(uniqueTalkDurationArraySorted, dataArray) {
-    const talkDurationAndTitleObject = [];
-
-    uniqueTalkDurationArraySorted.forEach(duration => {
-      talkDurationAndTitleObject.push({ duration: duration, titles: [] });
-    });
-
-    dataArray.forEach(talk => {
-      if (talk.match(durationRegex) === null) {
-        const indexOfLightning = talkDurationAndTitleObject.findIndex(
-          index => index.duration === DURATION_OF_LIGHTNING_TALK
-        );
-        talkDurationAndTitleObject[indexOfLightning].titles.push(talk);
-      } else {
-        for (let i = 0; i < talkDurationAndTitleObject.length; i++) {
-          if (talk.includes(talkDurationAndTitleObject[i].duration)) {
-            talkDurationAndTitleObject[i].titles.push(talk);
-            return;
-          }
-        }
-      }
-    });
-    return talkDurationAndTitleObject;
-  }
-
-  executeFormatData(data) {
-    const dataArray = this.convertDataToArray(data);
-    const uniqueTalkDurationArray = this.createUniqueTalkDurationArray(
-      dataArray
-    );
-    const uniqueTalkDurationArraySorted = this.sortUniqueTalkDurationArray(
-      uniqueTalkDurationArray
-    );
-    const talkDurationAndTitleObject = this.createTalkDurationAndTitleObject(
-      uniqueTalkDurationArraySorted,
-      dataArray
-    );
-    return talkDurationAndTitleObject;
-  }
-}
-
-module.exports = FormatData;
+module.exports = {
+  convertDataToArray,
+  createUniqueTalkDurationArray,
+  sortUniqueTalkDurationArray,
+  createTalkDurationAndTitleObject,
+  executeFormatData
+};
