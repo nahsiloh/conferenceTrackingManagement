@@ -2,10 +2,6 @@ const DURATION_OF_LIGHTNING_TALK = 5;
 const durationRegex = /\d+/g;
 
 class FormatData {
-  constructor(data) {
-    this.data = data;
-  }
-
   convertDataToArray(data) {
     const dataArray = data.split("\n");
     return dataArray;
