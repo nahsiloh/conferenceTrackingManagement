@@ -1,21 +1,25 @@
 const MAX_SINGLE_DIGIT_NUMBER = 9;
 
 const formatHours = hours => {
+  let printTimeHours;
   if (hours <= MAX_SINGLE_DIGIT_NUMBER) {
-    return `0${hours}`;
+    printTimeHours = `0${hours}`;
   } else {
-    return `${hours}`;
+    printTimeHours = `${hours}`;
   }
+  return printTimeHours;
 };
 
 const formatMinutes = minutes => {
+  let printTimeMins;
   if (minutes === 0) {
-    return "00";
+    printTimeMins = "00";
   } else if (minutes <= MAX_SINGLE_DIGIT_NUMBER) {
-    return `0${minutes}`;
+    printTimeMins = `0${minutes}`;
   } else {
-    return `${minutes}`;
+    printTimeMins = `${minutes}`;
   }
+  return printTimeMins;
 };
 
 module.exports = { formatHours, formatMinutes };

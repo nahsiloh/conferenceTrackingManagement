@@ -1,4 +1,5 @@
 const { formatMinutes, formatHours } = require("../../common/formatTime");
+const { durationRegex, meridiamRegex } = require("../../common/regex");
 const DURATION_OF_LIGHTNING_TALK = 5;
 const AFTERNOON_SESSION_START_TIME = "01:00PM";
 
@@ -36,8 +37,6 @@ class Timetable {
   }
 
   assignTimingsForTalks(arrayOfTalksForTimeSlot, startTime) {
-    const durationRegex = /\d+/g;
-    const meridiamRegex = /[a-z]+/gi;
     const startTimeArray = startTime.match(durationRegex);
     const currentTimeMeridiem = startTime.match(meridiamRegex);
 
@@ -49,20 +48,15 @@ class Timetable {
     const scheduledTalksWithTiming = arrayOfTalksForTimeSlot.map(
       (talk, index) => {
         let scheduledTalkTime = "";
-
-        if (index === 0) {
-          scheduledTalkTime = startTime;
-        } else {
-          scheduledTalkTime = `${printTimeHours}:${printTimeMins}${currentTimeMeridiem}`;
-        }
-
         let durationOfTalk;
 
-        if (talk.match(durationRegex) === null) {
-          durationOfTalk = DURATION_OF_LIGHTNING_TALK;
-        } else {
-          durationOfTalk = Number(talk.match(durationRegex)[0]);
-        }
+        index === 0
+          ? (scheduledTalkTime = startTime)
+          : (scheduledTalkTime = `${printTimeHours}:${printTimeMins}${currentTimeMeridiem}`);
+
+        talk.match(durationRegex) === null
+          ? (durationOfTalk = DURATION_OF_LIGHTNING_TALK)
+          : (durationOfTalk = Number(talk.match(durationRegex)[0]));
 
         currentTimeMins += durationOfTalk;
 

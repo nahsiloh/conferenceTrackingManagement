@@ -1,12 +1,12 @@
+const { durationRegex } = require("./regex");
 const DURATION_OF_LIGHTNING_TALK = 5;
-const durationRegex = /\d+/g;
 
 const checkIfTalkIsLightning = durationRegexMatchArray => {
-  if (durationRegexMatchArray === null) {
-    return DURATION_OF_LIGHTNING_TALK;
-  } else {
-    return parseInt(durationRegexMatchArray[0]);
-  }
+  const durationOfTalk =
+    durationRegexMatchArray === null
+      ? DURATION_OF_LIGHTNING_TALK
+      : parseInt(durationRegexMatchArray[0]);
+  return durationOfTalk;
 };
 
 const convertDataToArray = data => {

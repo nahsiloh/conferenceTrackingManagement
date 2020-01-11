@@ -1,38 +1,26 @@
-const conferenceScheduleData = [
-  {
-    session: "morning",
-    startTime: "9:00AM",
-    durationOfAvailableSlotForTalks: 180
-  },
-  {
-    session: "lunch",
-    startTime: "12:00PM",
-    durationOfAvailableSlotForTalks: 0
-  },
-  {
-    session: "afternoon",
-    startTime: "1:00PM",
-    durationOfAvailableSlotForTalks: 240
-  },
-  { session: "networking", startTime: "", durationOfAvailableSlotForTalks: 0 }
-];
-
+const { conferenceTalkSessions } = require("../../data/conferenceTalkSessions");
 const Timetable = require("../Timetable/Timetable");
 
 class ConferenceSchedule {
-  constructor() {}
+  constructor(conferenceDays) {
+    this.conferenceDays = conferenceDays;
+  }
 
   getScheduledTalks(talkDurationAndTitleObject) {
-    const track1MorningTimetable = new Timetable(180);
+    const track1MorningTimetable = new Timetable(
+      conferenceTalkSessions[0].durationOfAvailableTimeForTalks
+    );
     const printTrack1MorningTimetable = track1MorningTimetable.executeTimetable(
       talkDurationAndTitleObject,
-      "09:00AM"
+      conferenceTalkSessions[0].startTime
     );
 
-    const track1AfternoonTimetable = new Timetable(240);
+    const track1AfternoonTimetable = new Timetable(
+      conferenceTalkSessions[1].durationOfAvailableTimeForTalks
+    );
     const printTrack1AfternoonTimetable = track1AfternoonTimetable.executeTimetable(
       talkDurationAndTitleObject,
-      "01:00PM"
+      conferenceTalkSessions[1].startTime
     );
 
     const track2MorningTimetable = new Timetable(180);
