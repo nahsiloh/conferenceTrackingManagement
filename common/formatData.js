@@ -24,9 +24,7 @@ const createUniqueTalkDurationArray = dataArray => {
 
     if (uniqueTalkDurationArray.length === 0) {
       uniqueTalkDurationArray.push(oneTalkDurationNumber);
-    }
-
-    if (uniqueTalkDurationArray.length > 0) {
+    } else {
       if (
         uniqueTalkDurationArray.some(
           duration => duration === oneTalkDurationNumber
