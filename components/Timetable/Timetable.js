@@ -1,5 +1,6 @@
 const { formatMinutes, formatHours } = require("../../common/formatTime");
 const DURATION_OF_LIGHTNING_TALK = 5;
+const AFTERNOON_SESSION_START_TIME = "01:00PM";
 
 class Timetable {
   constructor(timeAvailable) {
@@ -76,6 +77,13 @@ class Timetable {
         return scheduledTalkTime.concat(" ", talk);
       }
     );
+
+    if (startTime === AFTERNOON_SESSION_START_TIME) {
+      scheduledTalksWithTiming.push(
+        `${printTimeHours}:${printTimeMins}${currentTimeMeridiem} Networking Event`
+      );
+    }
+
     return scheduledTalksWithTiming;
   }
 
@@ -83,7 +91,7 @@ class Timetable {
     return scheduledTalksWithTiming.join("\n");
   }
 
-  printTimetable(talkDurationAndTitleObject, startTime) {
+  executeTimetable(talkDurationAndTitleObject, startTime) {
     const arrayOfTalksForTimeSlot = this.createArrayOfTalksForTimeSlot(
       talkDurationAndTitleObject
     );
