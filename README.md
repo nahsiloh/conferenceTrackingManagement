@@ -1,5 +1,12 @@
 ## Problem Two: Conference Track Management
 
+### To execute the file
+Require NodeJS
+```npm install
+node index.js```
+
+
+### Question
 You are planning a big programming conference and have received many proposals which have passed the initial screen process but you're having trouble fitting them into the time constraints of the day -- there are so many possibilities! So you write a program to do it for you.
 
  - The conference has multiple tracks each of which has a morning and afternoon session.
@@ -13,10 +20,10 @@ You are planning a big programming conference and have received many proposals w
 
 Note that depending on how you choose to complete this problem, your solution may give a different ordering or combination of talks into tracks. This is acceptable; you don't need to exactly duplicate the sample output given here.
 
-Test input:  
+#### Test input:  
 > Writing Fast Tests Against Enterprise Rails 60min  
-> Overdoing it in Python 45min  
-> Lua for the Masses 30min  
+Overdoing it in Python 45min  
+Lua for the Masses 30min  
 Ruby Errors from Mismatched Gem Versions 45min  
 Common Ruby Errors 45min  
 Rails for Python Developers lightning  
@@ -34,8 +41,8 @@ Ruby on Rails Legacy App Maintenance 60min
 A World Without HackerNews 30min  
 User Interface CSS in Rails Apps 30min  
 
-Test output:  
-Track 1:  
+#### Test output:  
+> Track 1:  
 09:00AM Writing Fast Tests Against Enterprise Rails 60min  
 10:00AM Overdoing it in Python 45min  
 10:45AM Lua for the Masses 30min  
@@ -49,7 +56,7 @@ Track 1:
 04:30PM User Interface CSS in Rails Apps 30min  
 05:00PM Networking Event  
 
-Track 2:  
+> Track 2:  
 09:00AM Communicating Over Distance 60min  
 10:00AM Rails Magic 60min  
 11:00AM Woah 30min  
