@@ -44,32 +44,32 @@ const sortUniqueTalkDurationArray = uniqueTalkDurationArray => {
   return uniqueTalkDurationArraySorted;
 };
 
-const createTalkDurationAndTitleObject = (
+const createtalkDurationAndTitleArray = (
   uniqueTalkDurationArraySorted,
   dataArray
 ) => {
-  const talkDurationAndTitleObject = [];
+  const talkDurationAndTitleArray = [];
 
   uniqueTalkDurationArraySorted.forEach(duration => {
-    talkDurationAndTitleObject.push({ duration: duration, titles: [] });
+    talkDurationAndTitleArray.push({ duration: duration, titles: [] });
   });
 
   dataArray.forEach(talk => {
     if (talk.match(durationRegex) === null) {
-      const indexOfLightning = talkDurationAndTitleObject.findIndex(
+      const indexOfLightning = talkDurationAndTitleArray.findIndex(
         index => index.duration === DURATION_OF_LIGHTNING_TALK
       );
-      talkDurationAndTitleObject[indexOfLightning].titles.push(talk);
+      talkDurationAndTitleArray[indexOfLightning].titles.push(talk);
     } else {
-      for (let i = 0; i < talkDurationAndTitleObject.length; i++) {
-        if (talk.includes(talkDurationAndTitleObject[i].duration)) {
-          talkDurationAndTitleObject[i].titles.push(talk);
+      for (let i = 0; i < talkDurationAndTitleArray.length; i++) {
+        if (talk.includes(talkDurationAndTitleArray[i].duration)) {
+          talkDurationAndTitleArray[i].titles.push(talk);
           return;
         }
       }
     }
   });
-  return talkDurationAndTitleObject;
+  return talkDurationAndTitleArray;
 };
 
 const executeFormatData = data => {
@@ -78,17 +78,17 @@ const executeFormatData = data => {
   const uniqueTalkDurationArraySorted = sortUniqueTalkDurationArray(
     uniqueTalkDurationArray
   );
-  const talkDurationAndTitleObject = createTalkDurationAndTitleObject(
+  const talkDurationAndTitleArray = createtalkDurationAndTitleArray(
     uniqueTalkDurationArraySorted,
     dataArray
   );
-  return talkDurationAndTitleObject;
+  return talkDurationAndTitleArray;
 };
 
 module.exports = {
   convertDataToArray,
   createUniqueTalkDurationArray,
   sortUniqueTalkDurationArray,
-  createTalkDurationAndTitleObject,
+  createtalkDurationAndTitleArray,
   executeFormatData
 };

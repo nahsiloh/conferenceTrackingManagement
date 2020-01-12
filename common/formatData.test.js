@@ -5,14 +5,14 @@ const {
   testDataArray,
   testUniqueTalkDurationArray,
   testUniqueTalkDurationArraySorted,
-  testTalkDurationAndTitleObject
+  testtalkDurationAndTitleArray
 } = require("../data/testData");
 
 const {
   convertDataToArray,
   createUniqueTalkDurationArray,
   sortUniqueTalkDurationArray,
-  createTalkDurationAndTitleObject,
+  createtalkDurationAndTitleArray,
   executeFormatData
 } = require("./formatData");
 
@@ -35,16 +35,16 @@ describe("Format Data", () => {
 
   it("should create a unique date array", () => {
     expect(
-      createTalkDurationAndTitleObject(
+      createtalkDurationAndTitleArray(
         testUniqueTalkDurationArray,
         testDataArray
       )
-    ).toStrictEqual(testTalkDurationAndTitleObject);
+    ).toStrictEqual(testtalkDurationAndTitleArray);
   });
 
   describe("Execute Format Data", () => {
     expect(executeFormatData(testData)).toStrictEqual(
-      testTalkDurationAndTitleObject
+      testtalkDurationAndTitleArray
     );
   });
 });

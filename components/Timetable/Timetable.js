@@ -17,20 +17,20 @@ class Timetable {
     array[index].titles.shift();
   }
 
-  createArrayOfTalksForTimeSlot(talkDurationAndTitleObject) {
-    for (let i = 0; i < talkDurationAndTitleObject.length; i++) {
+  createArrayOfTalksForTimeSlot(talkDurationAndTitleArray) {
+    for (let i = 0; i < talkDurationAndTitleArray.length; i++) {
       if (this.remainingTime === 0) {
         break;
       }
 
       if (
-        this.remainingTime % talkDurationAndTitleObject[i].duration === 0 &&
-        talkDurationAndTitleObject[i].titles.length > 0
+        this.remainingTime % talkDurationAndTitleArray[i].duration === 0 &&
+        talkDurationAndTitleArray[i].titles.length > 0
       ) {
-        this.addTalkToTimetable(talkDurationAndTitleObject, i);
-        this.removeTalkFromTalkData(talkDurationAndTitleObject, i);
-        this.remainingTime -= talkDurationAndTitleObject[i].duration;
-        this.createArrayOfTalksForTimeSlot(talkDurationAndTitleObject);
+        this.addTalkToTimetable(talkDurationAndTitleArray, i);
+        this.removeTalkFromTalkData(talkDurationAndTitleArray, i);
+        this.remainingTime -= talkDurationAndTitleArray[i].duration;
+        this.createArrayOfTalksForTimeSlot(talkDurationAndTitleArray);
       }
     }
     return this.arrayOfTalksForTimeSlot;
@@ -85,16 +85,16 @@ class Timetable {
     return scheduledTalksWithTiming.join("\n");
   }
 
-  executeTimetable(talkDurationAndTitleObject, startTime) {
+  executeTimetable(talkDurationAndTitleArray, startTime) {
     const arrayOfTalksForTimeSlot = this.createArrayOfTalksForTimeSlot(
-      talkDurationAndTitleObject
+      talkDurationAndTitleArray
     );
-    const scheduledTalksWithTiming = this.assignTimingsForTalks(
+    const arrayOfScheduledTalksWithTiming = this.assignTimingsForTalks(
       arrayOfTalksForTimeSlot,
       startTime
     );
     const compiledTimetable = this.convertScheduledTalksToString(
-      scheduledTalksWithTiming
+      arrayOfScheduledTalksWithTiming
     );
     return compiledTimetable;
   }

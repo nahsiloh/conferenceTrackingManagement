@@ -15,7 +15,7 @@ module.exports.testUniqueTalkDurationArray = [45, 30, 60, 5];
 
 module.exports.testUniqueTalkDurationArraySorted = [60, 45, 30, 5];
 
-module.exports.testTalkDurationAndTitleObject = [
+module.exports.testtalkDurationAndTitleArray = [
   {
     duration: 60,
     titles: [
