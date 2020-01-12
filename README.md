@@ -1,6 +1,6 @@
 <h1>Problem Two: Conference Track Management <h1>
 
-You are planning a big programming conference and have received many proposals which have passed the initial screen process but you're having trouble fitting them into the time constraints of the day -- there are so many possibilities! So you write a program to do it for you.
+<p>You are planning a big programming conference and have received many proposals which have passed the initial screen process but you're having trouble fitting them into the time constraints of the day -- there are so many possibilities! So you write a program to do it for you.
 
  - The conference has multiple tracks each of which has a morning and afternoon session.
  - Each session contains multiple talks.
@@ -60,4 +60,4 @@ Track 2:
 02:30PM A World Without HackerNews 30min  
 03:00PM Ruby on Rails Legacy App Maintenance 60min  
 04:00PM Rails for Python Developers lightning  
-04:05PM Networking Event
+04:05PM Networking Event <p>
