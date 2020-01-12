@@ -14,9 +14,9 @@ You are planning a big programming conference and have received many proposals w
 Note that depending on how you choose to complete this problem, your solution may give a different ordering or combination of talks into tracks. This is acceptable; you don't need to exactly duplicate the sample output given here.
 
 Test input:  
-Writing Fast Tests Against Enterprise Rails 60min  
-Overdoing it in Python 45min  
-Lua for the Masses 30min  
+> Writing Fast Tests Against Enterprise Rails 60min  
+> Overdoing it in Python 45min  
+> Lua for the Masses 30min  
 Ruby Errors from Mismatched Gem Versions 45min  
 Common Ruby Errors 45min  
 Rails for Python Developers lightning  
