@@ -8,6 +8,6 @@ const { executeFormatData } = require("./common/formatData");
 const talkDurationAndTitleArray = executeFormatData(talksData);
 
 const techWeek = new ConferenceSchedule();
-const schedule = techWeek.scheduleForASession(talkDurationAndTitleArray);
+const schedule = techWeek.getScheduledTalks(talkDurationAndTitleArray);
 
 console.log(schedule);
