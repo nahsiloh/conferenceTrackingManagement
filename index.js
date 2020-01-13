@@ -8,6 +8,22 @@ const { executeFormatData } = require("./common/formatData");
 const talkDurationAndTitleArray = executeFormatData(talksData);
 
 const techWeek = new ConferenceSchedule();
-const schedule = techWeek.getScheduledTalks(talkDurationAndTitleArray);
+const conferenceScheduleArray = techWeek.getScheduledTalksForConferenceArray(
+  talkDurationAndTitleArray
+);
 
-console.log(schedule);
+function convertScheduledTalksToString(scheduledTalksWithTiming) {
+  return scheduledTalksWithTiming.join("\n");
+}
+
+(function printSchedule() {
+  conferenceScheduleArray.forEach(tracks =>
+    console.log(
+      `Track${tracks.track}\n` +
+        `${convertScheduledTalksToString(tracks.morningSession)}\n` +
+        "12:00PM Lunch\n" +
+        `${convertScheduledTalksToString(tracks.afternoonSession)}\n`
+    )
+  );
+  return;
+})();
