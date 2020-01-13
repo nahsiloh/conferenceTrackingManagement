@@ -3,7 +3,7 @@ const {
   MORNING_SESSION_DURATION,
   AFTERNOON_SESSION_START_TIME,
   AFTERNOON_SESSION_DURATION
-} = require("../../data/conferenceTalkSessions");
+} = require("../../data/conferenceSessionsData");
 const CreateTimetable = require("../CreateTimetable/CreateTimetable");
 class ConferenceSchedule {
   constructor() {

@@ -10,7 +10,7 @@ const { printTimeFormat } = require("../../common/printFormat");
 const {
   AFTERNOON_SESSION_START_TIME,
   DURATION_OF_LIGHTNING_TALK
-} = require("../../data/conferenceTalkSessions");
+} = require("../../data/conferenceSessionsData");
 
 class CreateTimetable {
   firstTalkOfTheSession(index) {
@@ -29,7 +29,7 @@ class CreateTimetable {
     return mins >= 60;
   }
 
-  isAfternoonSession(startTime) {
+  addNetworkingInAfternoonSession(startTime) {
     return startTime === AFTERNOON_SESSION_START_TIME;
   }
 
@@ -90,7 +90,7 @@ class CreateTimetable {
       }
     );
 
-    if (this.isAfternoonSession(startTime)) {
+    if (this.addNetworkingInAfternoonSession(startTime)) {
       scheduledTalksWithTimingArray.push(
         printTimeFormat(printTimeHours, printTimeMins, currentTimeMeridiem) +
           " Networking Event"

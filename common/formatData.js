@@ -1,7 +1,7 @@
 const { durationRegex, getRegexMatchArray } = require("./regex");
 const {
   DURATION_OF_LIGHTNING_TALK
-} = require("../data/conferenceTalkSessions");
+} = require("../data/conferenceSessionsData");
 
 const isLightningTalk = durationRegexMatchArray => {
   return durationRegexMatchArray === null;
