@@ -1,12 +1,13 @@
-module.exports.conferenceTalkSessions = [
-  {
-    session: "morning",
-    startTime: "09:00AM",
-    durationOfAvailableTimeForTalks: 180
-  },
-  {
-    session: "afternoon",
-    startTime: "01:00PM",
-    durationOfAvailableTimeForTalks: 240
-  }
-];
+const MORNING_SESSION_START_TIME = "09:00AM";
+const MORNING_SESSION_DURATION = 180;
+const AFTERNOON_SESSION_START_TIME = "01:00PM";
+const AFTERNOON_SESSION_DURATION = 240;
+const DURATION_OF_LIGHTNING_TALK = 5;
+
+module.exports = {
+  MORNING_SESSION_START_TIME,
+  MORNING_SESSION_DURATION,
+  AFTERNOON_SESSION_START_TIME,
+  AFTERNOON_SESSION_DURATION,
+  DURATION_OF_LIGHTNING_TALK
+};

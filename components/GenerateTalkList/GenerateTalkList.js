@@ -1,9 +1,4 @@
-const { formatMinutes, formatHours } = require("../../common/formatTime");
-const { durationRegex, meridiamRegex } = require("../../common/regex");
-const DURATION_OF_LIGHTNING_TALK = 5;
-const AFTERNOON_SESSION_START_TIME = "01:00PM";
-
-class Timetable {
+class GenerateTalkList {
   constructor(timeAvailable) {
     this.arrayOfTalksForTimeSlot = [];
     this.remainingTime = timeAvailable;
@@ -37,4 +32,4 @@ class Timetable {
   }
 }
 
-module.exports = Timetable;
+module.exports = GenerateTalkList;

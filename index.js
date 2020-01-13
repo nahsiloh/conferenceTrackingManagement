@@ -4,6 +4,7 @@ module.exports = talksData;
 
 const ConferenceSchedule = require("./components/ConferenceSchedule/ConferenceSchedule");
 const { executeFormatData } = require("./common/formatData");
+const { printScheduleFormat } = require("./common/printFormat");
 
 const talkDurationAndTitleArray = executeFormatData(talksData);
 
@@ -12,18 +13,15 @@ const conferenceScheduleArray = techWeek.getScheduledTalksForConferenceArray(
   talkDurationAndTitleArray
 );
 
-function convertScheduledTalksToString(scheduledTalksWithTiming) {
-  return scheduledTalksWithTiming.join("\n");
-}
-
 (function printSchedule() {
-  conferenceScheduleArray.forEach(tracks =>
+  conferenceScheduleArray.forEach(tracks => {
     console.log(
-      `Track${tracks.track}\n` +
-        `${convertScheduledTalksToString(tracks.morningSession)}\n` +
-        "12:00PM Lunch\n" +
-        `${convertScheduledTalksToString(tracks.afternoonSession)}\n`
-    )
-  );
+      printScheduleFormat(
+        tracks.track,
+        tracks.morningSession,
+        tracks.afternoonSession
+      )
+    );
+  });
   return;
 })();

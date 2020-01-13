@@ -1,11 +1,16 @@
-const { durationRegex } = require("./regex");
-const DURATION_OF_LIGHTNING_TALK = 5;
+const { durationRegex, getRegexMatchArray } = require("./regex");
+const {
+  DURATION_OF_LIGHTNING_TALK
+} = require("../data/conferenceTalkSessions");
 
-const checkIfTalkIsLightning = durationRegexMatchArray => {
-  const durationOfTalk =
-    durationRegexMatchArray === null
-      ? DURATION_OF_LIGHTNING_TALK
-      : parseInt(durationRegexMatchArray[0]);
+const isLightningTalk = durationRegexMatchArray => {
+  return durationRegexMatchArray === null;
+};
+
+const assignTalkDuration = durationRegexMatchArray => {
+  const durationOfTalk = isLightningTalk(durationRegexMatchArray)
+    ? DURATION_OF_LIGHTNING_TALK
+    : parseInt(durationRegexMatchArray[0]);
   return durationOfTalk;
 };
 
@@ -17,27 +22,54 @@ const sortArrayByDescendingDurations = array => {
   return array.sort((a, b) => b - a);
 };
 
+const ifDurationIsUnique = (array, talkDuration) => {
+  return array.some(duration => duration === talkDuration) === false;
+};
+
 const createUniqueAndSortedArrayOfTalkDurations = dataArray => {
   const uniqueArrayOfTalkDurations = [];
 
   dataArray.forEach(talk => {
-    let oneTalkDurationArray = talk.match(durationRegex);
-    const oneTalkDurationNumber = checkIfTalkIsLightning(oneTalkDurationArray);
+    let oneTalkDurationArray = getRegexMatchArray(talk, durationRegex);
+    const oneTalkDurationNumber = assignTalkDuration(oneTalkDurationArray);
 
     if (uniqueArrayOfTalkDurations.length === 0) {
       uniqueArrayOfTalkDurations.push(oneTalkDurationNumber);
-    } else {
-      if (
-        uniqueArrayOfTalkDurations.some(
-          duration => duration === oneTalkDurationNumber
-        ) === false
-      ) {
-        uniqueArrayOfTalkDurations.push(oneTalkDurationNumber);
-      }
+    }
+
+    if (ifDurationIsUnique(uniqueArrayOfTalkDurations, oneTalkDurationNumber)) {
+      uniqueArrayOfTalkDurations.push(oneTalkDurationNumber);
     }
   });
 
   return sortArrayByDescendingDurations(uniqueArrayOfTalkDurations);
+};
+
+const getIndexOfLightningTalk = talkDurationAndTitleArray => {
+  return talkDurationAndTitleArray.findIndex(
+    index => index.duration === DURATION_OF_LIGHTNING_TALK
+  );
+};
+
+const sortTalksToArrayAccordingToDuration = (
+  dataArray,
+  talkDurationAndTitleArray
+) => {
+  dataArray.forEach(talk => {
+    if (getRegexMatchArray(talk, durationRegex) === null) {
+      const indexOfLightning = getIndexOfLightningTalk(
+        talkDurationAndTitleArray
+      );
+      talkDurationAndTitleArray[indexOfLightning].titles.push(talk);
+    } else {
+      for (let i = 0; i < talkDurationAndTitleArray.length; i++) {
+        if (talk.includes(talkDurationAndTitleArray[i].duration)) {
+          talkDurationAndTitleArray[i].titles.push(talk);
+          return;
+        }
+      }
+    }
+  });
 };
 
 const createtalkDurationAndTitleArray = (
@@ -50,21 +82,7 @@ const createtalkDurationAndTitleArray = (
     talkDurationAndTitleArray.push({ duration: duration, titles: [] });
   });
 
-  dataArray.forEach(talk => {
-    if (talk.match(durationRegex) === null) {
-      const indexOfLightning = talkDurationAndTitleArray.findIndex(
-        index => index.duration === DURATION_OF_LIGHTNING_TALK
-      );
-      talkDurationAndTitleArray[indexOfLightning].titles.push(talk);
-    } else {
-      for (let i = 0; i < talkDurationAndTitleArray.length; i++) {
-        if (talk.includes(talkDurationAndTitleArray[i].duration)) {
-          talkDurationAndTitleArray[i].titles.push(talk);
-          return;
-        }
-      }
-    }
-  });
+  sortTalksToArrayAccordingToDuration(dataArray, talkDurationAndTitleArray);
   return talkDurationAndTitleArray;
 };
 

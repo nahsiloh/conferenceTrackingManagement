@@ -1,15 +1,13 @@
-const { conferenceTalkSessions } = require("../../data/conferenceTalkSessions");
-const { durationRegex, meridiamRegex } = require("../../common/regex");
-const { formatMinutes, formatHours } = require("../../common/formatTime");
-
-const Timetable = require("../Timetable/Timetable");
-const AFTERNOON_SESSION_START_TIME = "01:00PM";
-const DURATION_OF_LIGHTNING_TALK = 5;
-
+const {
+  MORNING_SESSION_START_TIME,
+  MORNING_SESSION_DURATION,
+  AFTERNOON_SESSION_START_TIME,
+  AFTERNOON_SESSION_DURATION
+} = require("../../data/conferenceTalkSessions");
+const CreateTimetable = require("../CreateTimetable/CreateTimetable");
 class ConferenceSchedule {
-  constructor(talkDurationAndTitleArray) {
+  constructor() {
     this.track = 1;
-    this.talkDurationAndTitleArray = talkDurationAndTitleArray;
     this.isUnscheduledTalks = false;
     this.scheduleForADay = {
       track: this.track,
@@ -19,118 +17,58 @@ class ConferenceSchedule {
     this.scheduleForConference = [];
   }
 
-  checkIfTalkIsLightning(talk) {
-    const durationOfTalk =
-      talk.match(durationRegex) === null
-        ? DURATION_OF_LIGHTNING_TALK
-        : Number(talk.match(durationRegex)[0]);
-    return durationOfTalk;
-  }
-
-  minutesIsMoreThan60(mins) {
-    return mins >= 60;
-  }
-
-  firstTalkOfTheSession(index) {
-    return index === 0;
-  }
-
-  isAfternoonSession(startTime) {
-    return startTime === AFTERNOON_SESSION_START_TIME;
-  }
-
-  assignTimingsToTalks(
-    talkDurationAndTitleArray,
-    startTime,
-    durationOfAvailableTimeForTalks
-  ) {
-    const timetableForASession = new Timetable(durationOfAvailableTimeForTalks);
-    const arrayOfTalksForTimeSlot = timetableForASession.createArrayOfTalksForTimeSlot(
-      talkDurationAndTitleArray
-    );
-
-    const startTimeArray = startTime.match(durationRegex);
-    const currentTimeMeridiem = startTime.match(meridiamRegex);
-
-    let currentTimeHour = Number(startTimeArray[0]);
-    let currentTimeMins = Number(startTimeArray[1]);
-
-    let [printTimeHours, printTimeMins] = [currentTimeHour, currentTimeMins];
-
-    const scheduledTalksWithTimingArray = arrayOfTalksForTimeSlot.map(
-      (talk, index) => {
-        let scheduledTalkTime = "";
-        let durationOfTalk;
-
-        this.firstTalkOfTheSession(index)
-          ? (scheduledTalkTime = startTime)
-          : (scheduledTalkTime = `${printTimeHours}:${printTimeMins}${currentTimeMeridiem}`);
-
-        durationOfTalk = this.checkIfTalkIsLightning(talk);
-        currentTimeMins += durationOfTalk;
-
-        if (this.minutesIsMoreThan60(currentTimeMins)) {
-          currentTimeHour += 1;
-          currentTimeMins -= 60;
-        }
-
-        printTimeHours = formatHours(currentTimeHour);
-        printTimeMins = formatMinutes(currentTimeMins);
-
-        return scheduledTalkTime.concat(" ", talk);
-      }
-    );
-
-    if (this.isAfternoonSession(startTime)) {
-      scheduledTalksWithTimingArray.push(
-        `${printTimeHours}:${printTimeMins}${currentTimeMeridiem} Networking Event`
-      );
-    }
-
-    return scheduledTalksWithTimingArray;
+  resestState() {
+    this.scheduleForADay = {
+      track: this.track,
+      morningSession: [],
+      afternoonSession: []
+    };
+    this.track += 1;
+    this.isUnscheduledTalks = false;
   }
 
   getScheduledTalksForOneTrack(talkDurationAndTitleArray) {
-    const arrayOfTalksWithAssignedTimingsForMorning = this.assignTimingsToTalks(
+    const morningTimetable = new CreateTimetable();
+    const afternoonTimetable = new CreateTimetable();
+
+    const arrayOfTalksWithAssignedTimingsForMorning = morningTimetable.assignTimingsToTalks(
       talkDurationAndTitleArray,
-      conferenceTalkSessions[0].startTime,
-      conferenceTalkSessions[0].durationOfAvailableTimeForTalks
+      MORNING_SESSION_START_TIME,
+      MORNING_SESSION_DURATION
     );
     this.scheduleForADay.morningSession = arrayOfTalksWithAssignedTimingsForMorning;
 
-    const arrayOfTalksWithAssignedTimingsForAfternoon = this.assignTimingsToTalks(
+    const arrayOfTalksWithAssignedTimingsForAfternoon = afternoonTimetable.assignTimingsToTalks(
       talkDurationAndTitleArray,
-      conferenceTalkSessions[1].startTime,
-      conferenceTalkSessions[1].durationOfAvailableTimeForTalks
+      AFTERNOON_SESSION_START_TIME,
+      AFTERNOON_SESSION_DURATION
     );
     this.scheduleForADay.afternoonSession = arrayOfTalksWithAssignedTimingsForAfternoon;
 
     return this.scheduleForADay;
   }
 
+  isTalksUnscheduled(talk) {
+    return talk.titles.length > 0;
+  }
+
   checkForUnscheduledTalks(talkDurationAndTitleArray) {
-    for (let i = 0; i < talkDurationAndTitleArray.length; i++) {
-      if (talkDurationAndTitleArray[i].titles.length > 0) {
+    talkDurationAndTitleArray.forEach(talk => {
+      if (this.isTalksUnscheduled(talk)) {
         return (this.isUnscheduledTalks = true);
       }
-    }
+    });
     return this.isUnscheduledTalks;
   }
 
   getScheduledTalksForConferenceArray(talkDurationAndTitleArray) {
     this.checkForUnscheduledTalks(talkDurationAndTitleArray);
     while (this.isUnscheduledTalks === true) {
-      this.scheduleForADay = {
-        track: this.track,
-        morningSession: [],
-        afternoonSession: []
-      };
-      this.track += 1;
+      this.resestState();
       const scheduleForADay = this.getScheduledTalksForOneTrack(
         talkDurationAndTitleArray
       );
       this.scheduleForConference.push(scheduleForADay);
-      this.isUnscheduledTalks = false;
       this.checkForUnscheduledTalks(talkDurationAndTitleArray);
     }
     return this.scheduleForConference;

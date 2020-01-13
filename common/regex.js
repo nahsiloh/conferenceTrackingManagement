@@ -1,4 +1,8 @@
 const durationRegex = /\d+/g;
 const meridiamRegex = /[a-z]+/gi;
 
-module.exports = { durationRegex, meridiamRegex };
+const getRegexMatchArray = (string, regex) => {
+  return string.match(regex);
+};
+
+module.exports = { durationRegex, meridiamRegex, getRegexMatchArray };
