@@ -11,8 +11,6 @@ module.exports.testDataArray = [
   "Communicating Over Distance 60min"
 ];
 
-module.exports.testUniqueTalkDurationArray = [45, 30, 60, 5];
-
 module.exports.testUniqueTalkDurationArraySorted = [60, 45, 30, 5];
 
 module.exports.testtalkDurationAndTitleArray = [

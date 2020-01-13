@@ -10,47 +10,43 @@ const checkIfTalkIsLightning = durationRegexMatchArray => {
 };
 
 const convertDataToArray = data => {
-  const dataArray = data.split("\n");
-  return dataArray;
+  return data.split("\n");
 };
 
-const createUniqueTalkDurationArray = dataArray => {
-  const uniqueTalkDurationArray = [];
+const sortArrayByDescendingDurations = array => {
+  return array.sort((a, b) => b - a);
+};
+
+const createUniqueAndSortedArrayOfTalkDurations = dataArray => {
+  const uniqueArrayOfTalkDurations = [];
 
   dataArray.forEach(talk => {
     let oneTalkDurationArray = talk.match(durationRegex);
-
     const oneTalkDurationNumber = checkIfTalkIsLightning(oneTalkDurationArray);
 
-    if (uniqueTalkDurationArray.length === 0) {
-      uniqueTalkDurationArray.push(oneTalkDurationNumber);
+    if (uniqueArrayOfTalkDurations.length === 0) {
+      uniqueArrayOfTalkDurations.push(oneTalkDurationNumber);
     } else {
       if (
-        uniqueTalkDurationArray.some(
+        uniqueArrayOfTalkDurations.some(
           duration => duration === oneTalkDurationNumber
         ) === false
       ) {
-        uniqueTalkDurationArray.push(oneTalkDurationNumber);
+        uniqueArrayOfTalkDurations.push(oneTalkDurationNumber);
       }
     }
   });
-  return uniqueTalkDurationArray;
-};
 
-const sortUniqueTalkDurationArray = uniqueTalkDurationArray => {
-  const uniqueTalkDurationArraySorted = uniqueTalkDurationArray.sort(
-    (a, b) => b - a
-  );
-  return uniqueTalkDurationArraySorted;
+  return sortArrayByDescendingDurations(uniqueArrayOfTalkDurations);
 };
 
 const createtalkDurationAndTitleArray = (
-  uniqueTalkDurationArraySorted,
+  uniqueAndSortedArrayOfTalkDurations,
   dataArray
 ) => {
   const talkDurationAndTitleArray = [];
 
-  uniqueTalkDurationArraySorted.forEach(duration => {
+  uniqueAndSortedArrayOfTalkDurations.forEach(duration => {
     talkDurationAndTitleArray.push({ duration: duration, titles: [] });
   });
 
@@ -74,12 +70,11 @@ const createtalkDurationAndTitleArray = (
 
 const executeFormatData = data => {
   const dataArray = convertDataToArray(data);
-  const uniqueTalkDurationArray = createUniqueTalkDurationArray(dataArray);
-  const uniqueTalkDurationArraySorted = sortUniqueTalkDurationArray(
-    uniqueTalkDurationArray
+  const uniqueTalkDurationArray = createUniqueAndSortedArrayOfTalkDurations(
+    dataArray
   );
   const talkDurationAndTitleArray = createtalkDurationAndTitleArray(
-    uniqueTalkDurationArraySorted,
+    uniqueTalkDurationArray,
     dataArray
   );
   return talkDurationAndTitleArray;
@@ -87,8 +82,7 @@ const executeFormatData = data => {
 
 module.exports = {
   convertDataToArray,
-  createUniqueTalkDurationArray,
-  sortUniqueTalkDurationArray,
+  createUniqueAndSortedArrayOfTalkDurations,
   createtalkDurationAndTitleArray,
   executeFormatData
 };
